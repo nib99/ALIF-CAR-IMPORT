@@ -35,8 +35,6 @@
     .action{transition:transform .18s,filter .18s}
     .action:hover{transform:translateY(-2px);filter:brightness(.96)}
     .action:active{transform:translateY(0)}
-
-    /* Bright viewable hero video */
     .hero-video{
       position:absolute;inset:0;width:100%;height:100%;
       object-fit:cover;object-position:center center;
@@ -53,7 +51,21 @@
     [dir=rtl] .hero-copy{text-align:right}
     [dir=rtl] .hero-shade{transform:scaleX(-1)}
 
-    /* Mobile-first refinements */
+    /* Gallery */
+    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+    .gallery-item{position:relative;border-radius:16px;overflow:hidden;background:#e8f8f3;aspect-ratio:4/3;box-shadow:0 4px 20px #073f4320}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
+    .gallery-item .remove-btn{position:absolute;top:8px;right:8px;background:#f36d4f;color:white;border:none;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+    .gallery-item:hover .remove-btn{opacity:1}
+    .upload-zone{border:2px dashed #087b78;border-radius:16px;padding:32px;text-align:center;background:#f0faf7;cursor:pointer;transition:background .2s}
+    .upload-zone:hover,.upload-zone.dragover{background:#e0f5ef}
+
+    /* Social icons */
+    .social-links{display:flex;flex-wrap:wrap;gap:12px}
+    .social-links a{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.15);color:white;transition:transform .18s,background .18s}
+    .social-links a:hover{transform:translateY(-3px);background:rgba(255,255,255,0.25)}
+    .social-links svg{width:22px;height:22px;fill:currentColor}
+
     @media(max-width:640px){
       .assistant-widget{inset-inline:12px;bottom:calc(14px + env(safe-area-inset-bottom));align-items:flex-end}
       .assistant-panel{width:100%!important;max-width:none!important}
@@ -88,6 +100,7 @@
       </a>
       <nav aria-label="Primary" class="site-nav flex items-center gap-5 text-sm font-semibold">
         <a href="#inventory" data-i18n="navInventory"></a>
+        <a href="#gallery" data-i18n="navGallery"></a>
         <a href="#process" data-i18n="navProcess"></a>
         <a href="#about" data-i18n="navAbout"></a>
         <a href="#contact" data-i18n="navContact"></a>
@@ -107,20 +120,10 @@
   </header>
 
   <main>
-    <!-- HOME with bright background video -->
+    <!-- HOME -->
     <section id="home" class="anchor relative flex min-h-[560px] w-full items-center overflow-hidden bg-[#073f43]">
-      <video
-        class="hero-video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        poster=""
-      >
-        <!-- Upload your video as alif_car_import_background.mp4 in the same folder / assets -->
+      <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="">
         <source src="alif_car_import_background.mp4" type="video/mp4">
-        <!-- Fallback image if video fails -->
         Your browser does not support the video tag.
       </video>
       <div class="hero-shade absolute inset-0"></div>
@@ -135,7 +138,7 @@
       </div>
     </section>
 
-    <!-- Rest of the page stays the same structure -->
+    <!-- INVENTORY -->
     <section id="inventory" class="anchor section-pad bg-[#fff9ee]">
       <div class="mx-auto max-w-7xl">
         <p data-i18n="inventoryKicker" class="text-xs font-bold uppercase tracking-[.2em] text-[#087b78]"></p>
@@ -169,6 +172,32 @@
       </div>
     </section>
 
+    <!-- GALLERY -->
+    <section id="gallery" class="anchor section-pad bg-white">
+      <div class="mx-auto max-w-7xl">
+        <p data-i18n="galleryKicker" class="text-xs font-bold uppercase tracking-[.2em] text-[#087b78]"></p>
+        <div class="mt-3 grid gap-4 md:grid-cols-2 md:items-end">
+          <h2 data-i18n="galleryTitle" class="text-[clamp(2.2rem,4vw,3.7rem)]"></h2>
+          <p data-i18n="galleryIntro" class="max-w-lg leading-7 text-[#526467]"></p>
+        </div>
+
+        <div class="mt-8">
+          <label for="gallery-upload" class="upload-zone block cursor-pointer" id="upload-zone">
+            <input type="file" id="gallery-upload" accept="image/*" multiple class="hidden">
+            <div class="text-[#087b78]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <p class="font-bold text-lg" data-i18n="uploadTitle"></p>
+              <p class="mt-1 text-sm text-[#526467]" data-i18n="uploadHint"></p>
+            </div>
+          </label>
+        </div>
+
+        <div id="gallery-grid" class="gallery-grid mt-8"></div>
+        <p id="gallery-empty" class="mt-6 text-center text-[#526467]" data-i18n="galleryEmpty"></p>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
     <section id="process" class="anchor section-pad bg-[#073f43] text-white">
       <div class="mx-auto max-w-7xl">
         <p data-i18n="processKicker" class="text-xs font-bold uppercase tracking-[.2em] text-[#ffcc72]"></p>
@@ -194,6 +223,7 @@
       </div>
     </section>
 
+    <!-- REQUEST FORM -->
     <section id="request" class="anchor section-pad bg-[#e8f8f3]">
       <div class="mx-auto grid max-w-7xl gap-9 lg:grid-cols-[.75fr_1.25fr]">
         <div>
@@ -255,6 +285,7 @@
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section id="about" class="anchor section-pad bg-white">
       <div class="mx-auto grid max-w-7xl gap-5 md:grid-cols-2">
         <div>
@@ -265,6 +296,7 @@
       </div>
     </section>
 
+    <!-- FAQ -->
     <section id="faq" class="anchor section-pad bg-[#fff9ee]">
       <div class="mx-auto max-w-7xl">
         <h2 data-i18n="faqTitle" class="text-[clamp(2.2rem,4vw,3.7rem)]"></h2>
@@ -281,23 +313,56 @@
       </div>
     </section>
 
+    <!-- CONTACT + SOCIAL -->
     <section id="contact" class="anchor section-pad bg-[#087b78] text-white">
       <div class="mx-auto grid max-w-7xl gap-8 md:grid-cols-2">
         <div>
           <p data-i18n="contactKicker" class="text-xs font-bold uppercase tracking-[.2em] text-[#ffcc72]"></p>
           <h2 data-i18n="contactTitle" class="mt-3 text-[clamp(2.2rem,4vw,3.7rem)]"></h2>
           <p data-i18n="address" class="mt-5 max-w-lg leading-8"></p>
+          <div class="mt-6 space-y-2">
+            <a class="block min-h-11 py-1 text-lg font-bold underline underline-offset-4" href="tel:+251976011111">+251 97 601 1111</a>
+            <a class="block min-h-11 py-1 text-lg font-bold underline underline-offset-4" href="tel:+251969696936">+251 96 969 6936</a>
+          </div>
         </div>
-        <div class="flex flex-col items-start justify-center gap-3">
-          <a class="min-h-11 py-2 text-lg font-bold underline underline-offset-4" href="tel:+251976011111">+251 97 601 1111</a>
-          <a class="min-h-11 py-2 text-lg font-bold underline underline-offset-4" href="tel:+251969696936">+251 96 969 6936</a>
-          <a id="whatsapp-link" data-i18n="whatsapp" href="https://wa.me/251976011111" target="_blank" rel="noopener noreferrer" class="action mt-2 inline-flex min-h-12 items-center rounded-xl bg-[#ffcc72] px-6 py-3 font-bold text-[#073f43]"></a>
+        <div class="flex flex-col items-start justify-center gap-5">
+          <a id="whatsapp-link" data-i18n="whatsapp" href="https://wa.me/251976011111" target="_blank" rel="noopener noreferrer" class="action inline-flex min-h-12 items-center rounded-xl bg-[#ffcc72] px-6 py-3 font-bold text-[#073f43]"></a>
+
+          <div>
+            <p class="mb-3 text-sm font-bold uppercase tracking-wider text-[#ffcc72]" data-i18n="followUs"></p>
+            <div class="social-links">
+              <!-- TikTok -->
+              <a href="https://www.tiktok.com/@alif_car_import" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok">
+                <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+              </a>
+              <!-- Instagram -->
+              <a href="https://www.instagram.com/alif_car_import" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+              </a>
+              <!-- Telegram -->
+              <a href="https://t.me/Alif_Car_Import" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
+                <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              </a>
+              <!-- Facebook -->
+              <a href="https://www.facebook.com/AlifCarImport" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
+                <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+              <!-- YouTube -->
+              <a href="https://youtube.com/@alifcarimport" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
+              <!-- X (Twitter) -->
+              <a href="https://x.com/AlifCarImport" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
+                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.831L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Stronger AI Assistant -->
+  <!-- AI Assistant -->
   <aside id="assistant-widget" aria-label="ALIF Assistant" class="assistant-widget fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2">
     <div id="assistant-panel" class="assistant-panel hidden w-[min(380px,calc(100vw-1.5rem))] max-w-sm overflow-hidden rounded-2xl border border-[#b8d8d1] bg-white">
       <div class="flex items-center justify-between bg-[#073f43] px-5 py-4 text-white">
@@ -332,12 +397,14 @@
 
   <script>
   const en = {
-    navInventory:"Vehicles",navProcess:"Our process",navAbout:"About",navContact:"Contact",languageLabel:"Language",call:"Call us",
+    navInventory:"Vehicles",navGallery:"Gallery",navProcess:"Our process",navAbout:"About",navContact:"Contact",languageLabel:"Language",call:"Call us",
     eyebrow:"ADDIS ABABA · ETHIOPIA",heroTitle:"Your next journey starts with a conversation.",heroDescription:"Explore vehicle inquiries with ALIF CAR IMPORT. Tell us what you are looking for and our team can discuss the available options.",
     explore:"Explore vehicles",requestAction:"Request a car",
     inventoryKicker:"THE SHOWROOM",inventoryTitle:"Find your next vehicle",inventoryIntro:"Only verified company listings should appear here. Contact us to ask about current availability.",
     searchLabel:"Search",searchPlaceholder:"Search make or model",makeLabel:"Manufacturer",allMakes:"All manufacturers",fuelLabel:"Fuel",allFuel:"All fuel types",availabilityLabel:"Availability",allStatuses:"All statuses",
     emptyTitle:"No verified vehicles listed yet",emptyDescription:"We do not publish unverified stock or prices. Send us your preferred make and model, or call to ask what is currently available.",emptyAction:"Tell us what you’re looking for →",
+    galleryKicker:"OUR GALLERY",galleryTitle:"Car photos",galleryIntro:"Upload photos of vehicles you are interested in or that we currently have. Images stay visible while you browse.",
+    uploadTitle:"Add car photos",uploadHint:"Click or drag images here (JPG, PNG, WebP)",galleryEmpty:"No photos yet. Upload some above.",
     processKicker:"HOW TO START",processTitle:"A clearer way to begin",processNote:"Each vehicle inquiry is individual. Contact the team to confirm availability, specifications, pricing and any import arrangements before making a decision.",
     step1:"Share your requirements",step1Body:"Tell us your preferred vehicle, budget and how you would like to be contacted.",
     step2:"Discuss available options",step2Body:"Speak with the company directly about current options and relevant vehicle details.",
@@ -352,13 +419,116 @@
     faqTitle:"Good to know",faq1:"Are the vehicles shown here currently available?",faq1Answer:"No vehicles are listed until their information has been verified. Contact the company for current availability.",
     faq2:"Can I request a car that is not listed?",faq2Answer:"Yes. Use the request form to describe the vehicle you want. The company can then respond about possible options.",
     contactKicker:"LET’S TALK",contactTitle:"Speak with our team",address:"Meskel Flower, near Dreamliner Hotel, below the hotel, opposite Zemen Bank, Addis Ababa, Ethiopia.",
-    whatsapp:"MESSAGE ON WHATSAPP",footerLocation:"Meskel Flower · Addis Ababa",install:"Install app"
+    whatsapp:"MESSAGE ON WHATSAPP",followUs:"Follow us",footerLocation:"Meskel Flower · Addis Ababa",install:"Install app"
   };
 
-  const translations = { en /* keep the other languages from your original code if needed */ };
+  const om = {
+    navInventory:"Konkolaataa",navGallery:"Gaalarii",navProcess:"Adeemsa keenya",navAbout:"Waa'ee",navContact:"Qunnamtii",languageLabel:"Afaan",call:"Nu bilbilaa",
+    eyebrow:"FINFINNEE · ITOOPHIYAA",heroTitle:"Imala keessan itti aanu haasaa waliin jalqaba.",heroDescription:"Gaaffii konkolaataa ALIF CAR IMPORT waliin qoradhaa. Waan barbaaddan nuuf himaa, gareen keenya filannoowwan jiran irratti isin waliin mari'ata.",
+    explore:"Konkolaataa ilaali",requestAction:"Konkolaataa gaafadhu",
+    inventoryKicker:"SHOWROOM",inventoryTitle:"Konkolaataa keessan itti aanu argadhaa",inventoryIntro:"Tarreeffamni mirkanaa'e qofa asitti mul'ata. Jiruu ammaa gaafachuuf nu qunnamaa.",
+    searchLabel:"Barbaadi",searchPlaceholder:"Oomishaa ykn moodeelaa barbaadi",makeLabel:"Oomishtaa",allMakes:"Oomishtoota hunda",fuelLabel:"Boba'aa",allFuel:"Gosa boba'aa hunda",availabilityLabel:"Jiruu",allStatuses:"Haala hunda",
+    emptyTitle:"Konkolaataan mirkanaa'e amma hin jiru",emptyDescription:"Gatii ykn jiruu hin mirkaneessine hin maxxansinu. Oomishaa fi moodeelaa barbaaddan nuuf ergaa, ykn maal jiru gaafachuuf bilbilaa.",emptyAction:"Waan barbaaddan nuuf himaa →",
+    galleryKicker:"GAALARII KEENYA",galleryTitle:"Suuraa konkolaataa",galleryIntro:"Suuraa konkolaataa isin barbaaddan ykn amma jiran ol kaa'aa. Suuraan marsariitii irratti yeroo isin jirtan ni mul'ata.",
+    uploadTitle:"Suuraa konkolaataa dabali",uploadHint:"Asitti cuqaasaa ykn harkaa baasaa (JPG, PNG, WebP)",galleryEmpty:"Suuraan amma hin jiru. Ol kaa'aa.",
+    processKicker:"AKKAMITTI JALQABUU",processTitle:"Karaa ifaa ta'e",processNote:"Gaaffiin konkolaataa tokkoo tokkoo dha. Jiruu, ibsa, gatii fi haala galchuu mirkaneessuuf garee qunnamaa.",
+    step1:"Barbaachisummaa keessan himaa",step1Body:"Konkolaataa, baajata fi akkamyi isin qunnamuu barbaaddan nuuf himaa.",
+    step2:"Filannoowwan jiran mari'adhaa",step2Body:"Filannoowwan ammaa fi ibsa konkolaataa irratti kallattiin garee waliin haasofaa.",
+    step3:"Tarkaanfii itti aanu mirkaneessaa",step3Body:"Haala fi tarkaanfii itti aanu gaaffii keessaniif garee gaafadhaa.",
+    requestKicker:"GAAFFII DHUUNFAA",requestTitle:"Konkolaataa gaafadhu",requestIntro:"Konkolaataa addaa qabduu? Ibsa armaan gadii ergaa. Gaaffiin kun eegumsa ykn waadaa jiruu miti.",
+    privacy:"Gaaffiin keessan Canva Sheet irratti gareef kuufama. Odeeffannoo kaffaltii ykn dhuunfaa hin dabaliinaa.",
+    nameLabel:"Maqaa keessan *",phoneLabel:"Lakkoofsa bilbilaa *",preferredLanguageLabel:"Afaan filatamaa",vehicleLabel:"Konkolaataa barbaadamu *",budgetLabel:"Baajata (filannoo)",budgetPlaceholder:"Hanga fi maallaqa yoo beektan",
+    contactMethodLabel:"Qunnamtii filatamaa",methodPhone:"Bilbiluu",messageLabel:"Ergaa keessan *",submit:"Gaaffii ergi",sending:"Gaaffii ergaa jira…",
+    success:"Gaaffiin keessan kuufameera. Gargaarsa saffisaa yoo barbaaddan bilbilaa.",error:"Gaaffii keessan kuusuu hin dandeenye. Irra deebi'aa ykn nu bilbilaa.",unavailable:"Qunnamtiin gaaffii hin jiru. Nu bilbilaa.",
+    required:"Maqaa, bilbila, konkolaataa fi ergaa guutaa.",invalidPhone:"Lakkoofsa bilbilaa sirrii galchaa.",invalidMessage:"Ergaa yoo xiqqaate arfii 10 galchaa.",
+    aboutKicker:"BAKKA KEENYA",aboutTitle:"ALIF CAR IMPORT",aboutBody:"ALIF CAR IMPORT Meskel Flower, Finfinnee, Hotel Dreamliner bira, hotelicha jala, Baankii Zemen fuuldura daawwadhaa. Oduu konkolaataa ammaa argachuuf daawwachuu dura bilbilaa.",
+    faqTitle:"Beekuu gaarii",faq1:"Konkolaatoonni asitti mul'atan amma jiruu?",faq1Answer:"Konkolaataan hanga odeeffannoon isaa mirkanaa'utti hin tarreeffamu. Jiruu ammaa garee gaafadhaa.",
+    faq2:"Konkolaataa hin tarreeffamne gaafachuu nan danda'aa?",faq2Answer:"Eeyyee. Unkaa gaaffii fayyadamuun konkolaataa barbaaddan ibsaa. Gareen filannoowwan jiran irratti deebii kenna.",
+    contactKicker:"HAASA'AA",contactTitle:"Garee keenya waliin haasofaa",address:"Meskel Flower, Hotel Dreamliner bira, hotelicha jala, Baankii Zemen fuuldura, Finfinnee, Itoophiyaa.",
+    whatsapp:"WHATSAPP IRRATTI ERGAA",followUs:"Nu hordofaa",footerLocation:"Meskel Flower · Finfinnee",install:"App olkaa'i"
+  };
 
-  // Stronger AI Assistant responses
-  
+  const am = {
+    navInventory:"ተሽከርካሪዎች",navGallery:"ጋለሪ",navProcess:"ሂደታችን",navAbout:"ስለ እኛ",navContact:"አግኙን",languageLabel:"ቋንቋ",call:"ደውሉልን",
+    eyebrow:"አዲስ አበባ · ኢትዮጵያ",heroTitle:"ቀጣዩ ጉዞዎ በውይይት ይጀምራል።",heroDescription:"ከALIF CAR IMPORT ጋር የተሽከርካሪ ጥያቄዎችን ያስሱ። የሚፈልጉትን ይንገሩን፣ ቡድናችን ያሉትን አማራጮች ከእርስዎ ጋር ይወያያል።",
+    explore:"ተሽከርካሪዎችን ይመልከቱ",requestAction:"ተሽከርካሪ ይጠይቁ",
+    inventoryKicker:"ሾውሩም",inventoryTitle:"ቀጣዩን ተሽከርካሪዎን ያግኙ",inventoryIntro:"የተረጋገጡ የኩባንያ ዝርዝሮች ብቻ እዚህ መታየት አለባቸው። ስለ አሁኑ ተገኝነት ለመጠየቅ ያግኙን።",
+    searchLabel:"ፈልግ",searchPlaceholder:"አምራች ወይም ሞዴል ፈልግ",makeLabel:"አምራች",allMakes:"ሁሉም አምራቾች",fuelLabel:"ነዳጅ",allFuel:"ሁሉም የነዳጅ አይነቶች",availabilityLabel:"ተገኝነት",allStatuses:"ሁሉም ሁኔታዎች",
+    emptyTitle:"እስካሁን የተረጋገጡ ተሽከርካሪዎች የሉም",emptyDescription:"ያልተረጋገጠ ክምችት ወይም ዋጋ አናትምም። የሚመርጡትን አምራችና ሞዴል ይላኩልን፣ ወይም ምን እንዳለ ለመጠየቅ ይደውሉ።",emptyAction:"የሚፈልጉትን ይንገሩን →",
+    galleryKicker:"ጋለሪያችን",galleryTitle:"የተሽከርካሪ ፎቶዎች",galleryIntro:"የሚፈልጓቸውን ወይም አሁን ያሉን ተሽከርካሪዎች ፎቶ ያስገቡ። ምስሎች ገጹን በሚያስሱበት ጊዜ ይታያሉ።",
+    uploadTitle:"የተሽከርካሪ ፎቶዎችን ያክሉ",uploadHint:"እዚህ ጠቅ ያድርጉ ወይም ይጎትቱ (JPG, PNG, WebP)",galleryEmpty:"እስካሁን ፎቶ የለም። ከላይ ያስገቡ።",
+    processKicker:"እንዴት እንደሚጀመር",processTitle:"ግልጽ የመጀመሪያ መንገድ",processNote:"እያንዳንዱ የተሽከርካሪ ጥያቄ የግል ነው። ተገኝነትን፣ ዝርዝሮችን፣ ዋጋንና የማስገባት ሁኔታን ከመወሰንዎ በፊት ቡድኑን ያግኙ።",
+    step1:"መስፈርቶችዎን ያጋሩ",step1Body:"የሚመርጡትን ተሽከርካሪ፣ በጀትና እንዴት መገናኘት እንደሚፈልጉ ይንገሩን።",
+    step2:"ያሉትን አማራጮች ይወያዩ",step2Body:"ስለ አሁኑ አማራጮችና ተገቢ ዝርዝሮች በቀጥታ ከኩባንያው ጋር ይነጋገሩ።",
+    step3:"ቀጣዩን እርምጃ ያረጋግጡ",step3Body:"ለጥያቄዎ ተፈጻሚ የሆኑ ውሎችንና ቀጣዩን እርምጃ ቡድኑ እንዲያብራራ ይጠይቁ።",
+    requestKicker:"የግል ጥያቄዎች",requestTitle:"ተሽከርካሪ ይጠይቁ",requestIntro:"የተወሰነ ተሽከርካሪ አለዎት? ዝርዝሮቹን ከታች ይላኩ። ጥያቄ ማለት ቦታ ማስያዝ ወይም የተገኝነት ዋስትና አይደለም።",
+    privacy:"ጥያቄዎ ለኩባንያው ለመገምገም በCanva Sheet ይቀመጣል። የክፍያ ዝርዝር ወይም ሚስጥራዊ መረጃ አያካትቱ።",
+    nameLabel:"ስምዎ *",phoneLabel:"ስልክ ቁጥር *",preferredLanguageLabel:"የሚመርጡት ቋንቋ",vehicleLabel:"የሚፈልጉት ተሽከርካሪ *",budgetLabel:"በጀት (አማራጭ)",budgetPlaceholder:"መጠንና ምንዛሬ ካወቁ",
+    contactMethodLabel:"የሚመርጡት ግንኙነት",methodPhone:"ስልክ ጥሪ",messageLabel:"መልዕክትዎ *",submit:"ጥያቄ ላክ",sending:"ጥያቄ በመላክ ላይ…",
+    success:"ጥያቄዎ ተቀምጧል። አስቸኳይ እርዳታ ከፈለጉ ይደውሉ።",error:"ጥያቄዎን ማስቀመጥ አልቻልንም። እንደገና ይሞክሩ ወይም ይደውሉልን።",unavailable:"የጥያቄ ግንኙነት አይገኝም። በምትኩ ይደውሉልን።",
+    required:"እባክዎ ስም፣ ስልክ፣ ተሽከርካሪና መልዕክት ይሙሉ።",invalidPhone:"ትክክለኛ ስልክ ቁጥር ያስገቡ።",invalidMessage:"ቢያንስ 10 ቁምፊ ያለ መልዕክት ያስገቡ።",
+    aboutKicker:"አድራሻችን",aboutTitle:"ALIF CAR IMPORT",aboutBody:"ALIF CAR IMPORTን በመስቀል ፍላወር፣ አዲስ አበባ፣ ከድሪምላይነር ሆቴል አጠገብ፣ ከሆቴሉ በታችና ከዘመን ባንክ ፊት ለፊት ይጎብኙ። ከመምጣትዎ በፊት ስለ አሁኑ ተሽከርካሪ መረጃ ቡድኑን ይደውሉ።",
+    faqTitle:"ማወቅ ጥሩ ነው",faq1:"እዚህ የሚታዩ ተሽከርካሪዎች አሁን ይገኛሉ?",faq1Answer:"መረጃቸው እስኪረጋገጥ ድረስ ተሽከርካሪዎች አይዘረዘሩም። ስለ አሁኑ ተገኝነት ኩባንያውን ያግኙ።",
+    faq2:"ያልተዘረዘረ ተሽከርካሪ መጠየቅ እችላለሁ?",faq2Answer:"አዎ። የሚፈልጉትን ተሽከርካሪ ለመግለጽ የጥያቄ ቅጹን ይጠቀሙ። ኩባንያው ስለሚቻሉ አማራጮች ይመልሳል።",
+    contactKicker:"እንነጋገር",contactTitle:"ከቡድናችን ጋር ይነጋገሩ",address:"መስቀል ፍላወር፣ ከድሪምላይነር ሆቴል አጠገብ፣ ከሆቴሉ በታች፣ ከዘመን ባንክ ፊት ለፊት፣ አዲስ አበባ፣ ኢትዮጵያ።",
+    whatsapp:"በዋትስአፕ መልዕክት ይላኩ",followUs:"ይከተሉን",footerLocation:"መስቀል ፍላወር · አዲስ አበባ",install:"መተግበሪያ ጫን"
+  };
+
+  const ar = {
+    navInventory:"المركبات",navGallery:"المعرض",navProcess:"عمليتنا",navAbout:"عنا",navContact:"اتصل بنا",languageLabel:"اللغة",call:"اتصل بنا",
+    eyebrow:"أديس أبابا · إثيوبيا",heroTitle:"رحلتك القادمة تبدأ بمحادثة.",heroDescription:"استكشف استفسارات المركبات مع ALIF CAR IMPORT. أخبرنا بما تبحث عنه ويمكن لفريقنا مناقشة الخيارات المتاحة.",
+    explore:"استكشف المركبات",requestAction:"اطلب سيارة",
+    inventoryKicker:"صالة العرض",inventoryTitle:"اعثر على مركبتك التالية",inventoryIntro:"يجب أن تظهر هنا فقط القوائم المعتمدة من الشركة. اتصل بنا للاستفسار عن التوفر الحالي.",
+    searchLabel:"بحث",searchPlaceholder:"ابحث عن الشركة أو الطراز",makeLabel:"الشركة المصنعة",allMakes:"جميع الشركات",fuelLabel:"الوقود",allFuel:"جميع أنواع الوقود",availabilityLabel:"التوفر",allStatuses:"جميع الحالات",
+    emptyTitle:"لا توجد مركبات معتمدة مدرجة بعد",emptyDescription:"لا ننشر مخزوناً أو أسعاراً غير معتمدة. أرسل لنا الشركة والطراز المفضلين، أو اتصل للاستفسار عما هو متاح حالياً.",emptyAction:"أخبرنا بما تبحث عنه →",
+    galleryKicker:"معرضنا",galleryTitle:"صور السيارات",galleryIntro:"ارفع صوراً للمركبات التي تهتم بها أو المتوفرة لدينا حالياً. تبقى الصور مرئية أثناء التصفح.",
+    uploadTitle:"أضف صور السيارات",uploadHint:"انقر أو اسحب الصور هنا (JPG, PNG, WebP)",galleryEmpty:"لا توجد صور بعد. ارفع بعضها أعلاه.",
+    processKicker:"كيف تبدأ",processTitle:"طريقة أوضح للبدء",processNote:"كل استفسار عن مركبة فردي. اتصل بالفريق لتأكيد التوفر والمواصفات والأسعار وأي ترتيبات استيراد قبل اتخاذ القرار.",
+    step1:"شارك متطلباتك",step1Body:"أخبرنا بالمركبة المفضلة والميزانية وكيفية التواصل معك.",
+    step2:"ناقش الخيارات المتاحة",step2Body:"تحدث مع الشركة مباشرة عن الخيارات الحالية وتفاصيل المركبة.",
+    step3:"أكد الخطوات التالية",step3Body:"اطلب من الفريق شرح الشروط المطبقة والخطوات التالية لاستفسارك.",
+    requestKicker:"استفسارات شخصية",requestTitle:"اطلب مركبة",requestIntro:"هل لديك مركبة معينة في ذهنك؟ أرسل التفاصيل أدناه. الطلب ليس حجزاً أو ضماناً للتوفر.",
+    privacy:"يُحفظ استفسارك في ورقة Canva لمراجعة الشركة. لا تُدرج تفاصيل الدفع أو معلومات شخصية حساسة.",
+    nameLabel:"اسمك *",phoneLabel:"رقم الهاتف *",preferredLanguageLabel:"اللغة المفضلة",vehicleLabel:"المركبة المطلوبة *",budgetLabel:"الميزانية (اختياري)",budgetPlaceholder:"المبلغ والعملة إن عُرفا",
+    contactMethodLabel:"طريقة التواصل المفضلة",methodPhone:"مكالمة هاتفية",messageLabel:"رسالتك *",submit:"إرسال الاستفسار",sending:"جاري إرسال الاستفسار…",
+    success:"تم حفظ استفسارك. يرجى الاتصال إذا احتجت مساعدة فورية.",error:"تعذر حفظ استفسارك. حاول مجدداً أو اتصل بنا.",unavailable:"اتصال الاستفسار غير متاح. يرجى الاتصال بنا بدلاً من ذلك.",
+    required:"يرجى إكمال الاسم والهاتف والمركبة والرسالة.",invalidPhone:"أدخل رقم هاتف صالحاً.",invalidMessage:"أدخل رسالة لا تقل عن 10 أحرف.",
+    aboutKicker:"موقعنا",aboutTitle:"ALIF CAR IMPORT",aboutBody:"زر ALIF CAR IMPORT في مسكل فلاور بأديس أبابا، قرب فندق دريملاينر، أسفل الفندق ومقابل بنك زمن. اتصل بالفريق للحصول على معلومات المركبات الحالية قبل الزيارة.",
+    faqTitle:"من الجيد معرفته",faq1:"هل المركبات المعروضة هنا متاحة حالياً؟",faq1Answer:"لا تُدرج أي مركبة حتى يتم التحقق من معلوماتها. اتصل بالشركة للتوفر الحالي.",
+    faq2:"هل يمكنني طلب سيارة غير مدرجة؟",faq2Answer:"نعم. استخدم نموذج الطلب لوصف المركبة التي تريدها. يمكن للشركة الرد بشأن الخيارات الممكنة.",
+    contactKicker:"لنتحدث",contactTitle:"تحدث مع فريقنا",address:"مسكل فلاور، قرب فندق دريملاينر، أسفل الفندق، مقابل بنك زمن، أديس أبابا، إثيوبيا.",
+    whatsapp:"راسلنا على واتساب",followUs:"تابعنا",footerLocation:"مسكل فلاور · أديس أبابا",install:"تثبيت التطبيق"
+  };
+
+  const so = {
+    navInventory:"Baabuurta",navGallery:"Gallery",navProcess:"Habkeenna",navAbout:"Nagu saabsan",navContact:"Nala soo xiriir",languageLabel:"Luqadda",call:"Na soo wac",
+    eyebrow:"ADDIS ABABA · ITOOBIYA",heroTitle:"Safarkaaga xiga wuxuu ku bilaabmaa wadahadal.",heroDescription:"Baadh codsiyada baabuurta ALIF CAR IMPORT. Noo sheeg waxa aad raadineyso, kooxdayaduna waxay kula hadli doonaan fursadaha jira.",
+    explore:"Baadh baabuurta",requestAction:"Codso baabuur",
+    inventoryKicker:"SHOWROOM-KA",inventoryTitle:"Hel baabuurkaaga xiga",inventoryIntro:"Kaliya liisaska shirkadda ee la xaqiijiyay ayaa halkan ka muuqanaya. Nala soo xiriir si aad u weydiiso helitaanka hadda.",
+    searchLabel:"Raadi",searchPlaceholder:"Raadi shirkad ama nooc",makeLabel:"Shirkadda",allMakes:"Dhammaan shirkadaha",fuelLabel:"Shidaalka",allFuel:"Dhammaan noocyada shidaalka",availabilityLabel:"Helitaanka",allStatuses:"Dhammaan xaaladaha",
+    emptyTitle:"Weli ma jiraan baabuur la xaqiijiyay",emptyDescription:"Ma daabacno kayd ama qiimo aan la xaqiijin. Noo soo dir shirkadda iyo nooca aad doorbidayso, ama wac si aad u weydiiso waxa hadda jira.",emptyAction:"Noo sheeg waxa aad raadineyso →",
+    galleryKicker:"GALLERY-GEENNA",galleryTitle:"Sawirrada baabuurta",galleryIntro:"Soo geli sawirrada baabuurta aad xiisaynayso ama kuwa hadda haysanno. Sawirradu way muuqanayaan inta aad bogga ku jirto.",
+    uploadTitle:"Ku dar sawirrada baabuurta",uploadHint:"Guji ama jiid sawirrada halkan (JPG, PNG, WebP)",galleryEmpty:"Weli sawir ma jiro. Ku dar kuwa sare.",
+    processKicker:"SIDEED U BILAWDO",processTitle:"Hab cad oo bilow ah",processNote:"Codsi kasta oo baabuur ah waa mid gaar ah. La xiriir kooxda si aad u xaqiijiso helitaanka, faahfaahinta, qiimaha iyo habraacyada soo dejinta ka hor intaadan go'aan gaarin.",
+    step1:"La wadaag shuruudahaaga",step1Body:"Noo sheeg baabuurka aad doorbidayso, miisaaniyadda iyo sida aad rabto in lagula xiriirto.",
+    step2:"Ka hadal fursadaha jira",step2Body:"Si toos ah ula hadal shirkadda fursadaha hadda jira iyo faahfaahinta baabuurka.",
+    step3:"Xaqiiji tallaabooyinka xiga",step3Body:"Weydii kooxda inay sharaxaan shuruudaha khuseeya iyo tallaabooyinka xiga ee codsigaaga.",
+    requestKicker:"CODSIYO SHAKHSI AH",requestTitle:"Codso baabuur",requestIntro:"Ma haysaa baabuur gaar ah maskaxdaada? Soo dir faahfaahinta hoose. Codsigu ma aha ballan qaad ama dammaanad helitaan.",
+    privacy:"Codsigaaga waxaa lagu keydiyaa Canva Sheet si shirkaddu u eegto. Ha ku darin faahfaahinta lacag-bixinta ama macluumaad shakhsi ah oo xasaasi ah.",
+    nameLabel:"Magacaaga *",phoneLabel:"Lambarka taleefanka *",preferredLanguageLabel:"Luqadda aad doorbidayso",vehicleLabel:"Baabuurka aad xiisaynayso *",budgetLabel:"Miisaaniyadda (ikhtiyaari)",budgetPlaceholder:"Qaddarka iyo lacagta haddii la yaqaan",
+    contactMethodLabel:"Habka xiriirka aad doorbidayso",methodPhone:"Wicitaan taleefan",messageLabel:"Fariintaada *",submit:"Dir codsiga",sending:"Waa la dirayaa codsiga…",
+    success:"Codsigaaga waa la keydiyay. Fadlan wac haddii aad u baahan tahay caawimaad degdeg ah.",error:"Waan awoodi waynay inaan keydino codsigaaga. Isku day mar kale ama na soo wac.",unavailable:"Xiriirka codsiga lama heli karo. Fadlan na soo wac.",
+    required:"Fadlan buuxi magaca, taleefanka, baabuurka iyo fariinta.",invalidPhone:"Geli lambar taleefan sax ah.",invalidMessage:"Geli fariin ugu yaraan 10 xaraf.",
+    aboutKicker:"GOOBTEENNA",aboutTitle:"ALIF CAR IMPORT",aboutBody:"Booqo ALIF CAR IMPORT ee Meskel Flower, Addis Ababa, agagaarka Dreamliner Hotel, hoostiisa iyo ka soo horjeedka Zemen Bank. Wac kooxda si aad u hesho macluumaadka baabuurta hadda jira ka hor booqashada.",
+    faqTitle:"Wanaagsan in la ogaado",faq1:"Baabuurta halkan lagu muujiyay ma hadda jiraan?",faq1Answer:"Baabuur lama liisin illaa macluumaadkooda la xaqiijiyo. La xiriir shirkadda helitaanka hadda.",
+    faq2:"Ma codsan karaa baabuur aan liiska ku jirin?",faq2Answer:"Haa. Isticmaal foomka codsiga si aad u sharaxdo baabuurka aad rabto. Shirkaddu way ka jawaabi kartaa fursadaha suurtogalka ah.",
+    contactKicker:"AAN HADALNO",contactTitle:"La hadal kooxdayada",address:"Meskel Flower, agagaarka Dreamliner Hotel, hoostiisa, ka soo horjeedka Zemen Bank, Addis Ababa, Itoobiya.",
+    whatsapp:"FARRIIN WHATSAPP AH",followUs:"Na raac",footerLocation:"Meskel Flower · Addis Ababa",install:"Rakib app-ka"
+  };
+
+  const translations = { en, om, am, ar, so };
+
+  // Assistant copy (already multi-language)
   const assistantCopy = {
   en: {
     hello: "Hello! I’m ALIF Assistant — the official helper for ALIF CAR IMPORT in Addis Ababa.\n\nI can help you with:\n• Vehicle requests\n• Import process\n• Location & contact\n• What to prepare before calling\n\nWhat are you looking for today?",
@@ -370,7 +540,6 @@
     brands: "We work with popular imported brands including Toyota, BYD, Honda and others. Tell me the brand or model you prefer and I can help you prepare the request.",
     fallback: "I’m here to help with vehicle requests, the import process, location and contact details.\n\nFor real-time stock, prices or guarantees, please call the team directly: +251 97 601 1111 or +251 96 969 6936."
   },
-
   om: {
     hello: "Akkam! Ani ALIF Assistant — gargaaraa ALIF CAR IMPORT isa sirrii, Finfinnee keessa jiru.\n\nNan gargaaru:\n• Gaaffii konkolaataa\n• Adeemsa galchuu\n• Bakka fi qunnamtii\n• Waan qopheessuu qabdu\n\nMaal barbaadda har’a?",
     process: "Adeemsi keenya salphaadha:\n\n1. Gosa konkolaataa, baajata fi filannoo kee nuuf himi.\n2. Gareen filannoowwan jiran irratti si waliin mari’ata.\n3. Tarkaanfii itti aanu, haala fi galchuu mirkaneessina.\n\nGaaffii qopheessuuf nan gargaaraa?",
@@ -381,7 +550,6 @@
     brands: "Oomishtoota beekamoo kanneen akka Toyota, BYD, Honda fi kkf waliin hojjenna. Oomishaa ykn moodeelaa filattu natti himi, gaaffii qopheessuuf nan gargaara.",
     fallback: "Gaaffii konkolaataa, adeemsa galchuu, bakka fi qunnamtii irratti nan gargaara.\n\nJiruu, gatii ykn waadaa ammaaf garee kallattiin bilbili: +251 97 601 1111 ykn +251 96 969 6936."
   },
-
   am: {
     hello: "ሰላም! እኔ ALIF Assistant ነኝ — የALIF CAR IMPORT ይፋዊ ረዳት በአዲስ አበባ።\n\nእረዳዎታለሁ፦\n• የተሽከርካሪ ጥያቄ\n• የማስገባት ሂደት\n• አድራሻና አግኙን\n• ከመደወልዎ በፊት ምን ማዘጋጀት እንዳለብዎ\n\nዛሬ ምን ይፈልጋሉ?",
     process: "ቀላል ሂደታችን፦\n\n1. የተሽከርካሪ አይነት፣ በጀትና ምርጫዎን ያካፍሉ።\n2. ቡድናችን ስላሉ አማራጮች ከእርስዎ ጋር ይወያያል።\n3. ቀጣዩን እርምጃ፣ ውሎችንና የማስገባት ሁኔታን እናረጋግጣለን።\n\nጥያቄ እንዲያዘጋጁልዎ ይፈልጋሉ?",
@@ -392,7 +560,6 @@
     brands: "ከታዋቂ አምራቾች ጋር እንሰራለን፦ ቶዮታ፣ BYD፣ ሆንዳ እና ሌሎች። የሚመርጡትን አምራች ወይም ሞዴል ይንገሩኝ፤ ጥያቄ እንዲያዘጋጁ እረዳዎታለሁ።",
     fallback: "ስለ ተሽከርካሪ ጥያቄ፣ የማስገባት ሂደት፣ አድራሻና አግኙን እረዳዎታለሁ።\n\nለአሁኑ ክምችት፣ ዋጋ ወይም ዋስትና ቡድኑን በቀጥታ ይደውሉ፦ +251 97 601 1111 ወይም +251 96 969 6936።"
   },
-
   ar: {
     hello: "مرحباً! أنا ALIF Assistant — المساعد الرسمي لـ ALIF CAR IMPORT في أديس أبابا.\n\nيمكنني مساعدتك في:\n• طلبات السيارات\n• عملية الاستيراد\n• الموقع والتواصل\n• ما يجب تحضيره قبل الاتصال\n\nماذا تبحث عنه اليوم؟",
     process: "عمليتنا بسيطة:\n\n1. شارك نوع السيارة والميزانية وتفضيلاتك.\n2. يناقش فريقنا الخيارات المتاحة حالياً معك.\n3. نؤكد الخطوات التالية والشروط وأي ترتيبات استيراد.\n\nهل تريدني أن أساعدك في إعداد طلب؟",
@@ -403,7 +570,6 @@
     brands: "نتعامل مع علامات مستوردة شهيرة مثل تويوتا وBYD وهوندا وغيرها. أخبرني بالعلامة أو الطراز الذي تفضله وسأساعدك في إعداد الطلب.",
     fallback: "أنا هنا للمساعدة في طلبات السيارات وعملية الاستيراد والموقع والتواصل.\n\nللتأكد من المخزون أو الأسعار أو الضمانات حالياً، اتصل بالفريق مباشرة: +251 97 601 1111 أو +251 96 969 6936."
   },
-
   so: {
     hello: "Salaan! Waxaan ahay ALIF Assistant — kaaliyaha rasmiga ah ee ALIF CAR IMPORT ee Addis Ababa.\n\nWaxaan kaa caawin karaa:\n• Codsiyada baabuurta\n• Habka soo dejinta\n• Goobta iyo xiriirka\n• Waxa aad u diyaarinayso ka hor intaadan wicin\n\nMaxaad maanta raadineysaa?",
     process: "Habkeenu waa fudud:\n\n1. Sheeg nooca baabuurka, miisaaniyadda iyo doorbidkaaga.\n2. Kooxdayadu waxay kula hadli doonaan fursadaha hadda jira.\n3. Waxaan xaqiijinaynaa tallaabooyinka xiga, shuruudaha iyo habraacyada soo dejinta.\n\nMa doonaysaa inaan kaa caawiyo diyaarinta codsi?",
@@ -415,9 +581,7 @@
     fallback: "Waxaan halkan u joogaa caawinta codsiyada baabuurta, habka soo dejinta, goobta iyo xiriirka.\n\nSi aad u xaqiijiso kaydka, qiimaha ama dammaanadda hadda, si toos ah u wac kooxda: +251 97 601 1111 ama +251 96 969 6936."
   }
 };
-  
-  
-  
+
   let language = "en", sheetReady = false, deferredInstall = null;
   const $ = id => document.getElementById(id);
   const t = key => (translations[language] && translations[language][key]) || en[key] || "";
@@ -430,7 +594,7 @@
     document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
     $("language").value = language;
     if ($("preferred-language")) $("preferred-language").value = language;
-    document.title = "ALIF CAR IMPORT — " + (language === "am" ? "አዲስ አበባ" : language === "ar" ? "أديس أبابا" : "Addis Ababa");
+    document.title = "ALIF CAR IMPORT — " + (language === "am" ? "አዲስ አበባ" : language === "ar" ? "أديس أبابا" : language === "om" ? "Finfinnee" : "Addis Ababa");
     $("form-status").textContent = "";
   }
 
@@ -439,7 +603,7 @@
 
   $("whatsapp-link").href = "https://wa.me/251976011111?text=" + encodeURIComponent("Hello ALIF CAR IMPORT, I would like to ask about a vehicle.");
 
-  // Form handling (kept from original)
+  // Form handling
   const form = $("inquiry-form"), submit = $("submit-button"), status = $("form-status");
   form.addEventListener("submit", async e => {
     e.preventDefault();
@@ -485,7 +649,62 @@
     }
   });
 
-  // Stronger Assistant logic
+  // Gallery upload logic
+  const galleryGrid = $("gallery-grid");
+  const galleryEmpty = $("gallery-empty");
+  const uploadInput = $("gallery-upload");
+  const uploadZone = $("upload-zone");
+
+  function updateGalleryEmpty() {
+    galleryEmpty.style.display = galleryGrid.children.length === 0 ? "block" : "none";
+  }
+
+  function addGalleryImage(src) {
+    const item = document.createElement("div");
+    item.className = "gallery-item";
+    item.innerHTML = `
+      <img src="${src}" alt="Car photo" loading="lazy">
+      <button type="button" class="remove-btn" aria-label="Remove">×</button>
+    `;
+    item.querySelector(".remove-btn").addEventListener("click", () => {
+      item.remove();
+      updateGalleryEmpty();
+    });
+    galleryGrid.appendChild(item);
+    updateGalleryEmpty();
+  }
+
+  uploadInput.addEventListener("change", e => {
+    const files = Array.from(e.target.files || []);
+    files.forEach(file => {
+      if (!file.type.startsWith("image/")) return;
+      const reader = new FileReader();
+      reader.onload = ev => addGalleryImage(ev.target.result);
+      reader.readAsDataURL(file);
+    });
+    uploadInput.value = "";
+  });
+
+  // Drag & drop
+  ["dragenter","dragover"].forEach(evt => {
+    uploadZone.addEventListener(evt, e => { e.preventDefault(); uploadZone.classList.add("dragover"); });
+  });
+  ["dragleave","drop"].forEach(evt => {
+    uploadZone.addEventListener(evt, e => { e.preventDefault(); uploadZone.classList.remove("dragover"); });
+  });
+  uploadZone.addEventListener("drop", e => {
+    const files = Array.from(e.dataTransfer.files || []);
+    files.forEach(file => {
+      if (!file.type.startsWith("image/")) return;
+      const reader = new FileReader();
+      reader.onload = ev => addGalleryImage(ev.target.result);
+      reader.readAsDataURL(file);
+    });
+  });
+
+  updateGalleryEmpty();
+
+  // Assistant logic
   const panel = $("assistant-panel"), toggle = $("assistant-toggle"), messages = $("assistant-messages"), input = $("assistant-input");
 
   function addMessage(text, who = "bot") {
@@ -499,13 +718,12 @@
   function getReply(q) {
     const c = assistantCopy[language] || assistantCopy.en;
     q = q.toLowerCase();
-
     if (/process|how|import|steps|ሂደት|adeemsa|استيراد|habka|how to/.test(q)) return c.process;
     if (/request|want|looking|need|interested|ጠይቅ|gaaf|طلب|codsi|buy|purchase/.test(q)) return c.request;
     if (/contact|phone|call|whatsapp|number|ስልክ|bilb|اتصل|xiriir|reach/.test(q)) return c.contact;
     if (/location|address|where|map|meskel|dreamliner|zemen|አድራሻ|bakka|موقع|goobta/.test(q)) return c.location || c.contact;
     if (/budget|price|cost|how much|በጀት|baajata|ميزانية|qiimo/.test(q)) return c.budget || c.request;
-    if (/toyota|byd|honda|brand|make|model|car|vehicle|suv|toyota|byd/.test(q)) return c.brands || c.request;
+    if (/toyota|byd|honda|brand|make|model|car|vehicle|suv/.test(q)) return c.brands || c.request;
     if (/hello|hi|hey|selam|akkam|مرحبا|salaan/.test(q)) return c.hello;
     return c.fallback;
   }
@@ -547,7 +765,7 @@
     }
   })();
 
-  // Stronger PWA
+  // PWA
   try {
     const manifest = {
       name: "ALIF CAR IMPORT",
